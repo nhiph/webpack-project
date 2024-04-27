@@ -1,7 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-
+// minfy css, MiniCssExtractPlugin it's not compatible with webpack@5
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
   // entry: './src/index.js', // input file that we create and code inside.
@@ -36,6 +38,8 @@ module.exports = {
         }
       }
     },
+    // minify css
+    // minimizer: [new OptimizeCSSAssetsPlugin({})],
   },
   plugins: [
     // to clean unneccessary files
@@ -44,5 +48,21 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Output Management'
     }),
+    // minify css
+    // new MiniCssExtractPlugin({
+    //   filename: 'style.min.css' // minified css file name after build, auto import in dist/index.html
+    // }),
   ],
+  module: { // to load import file css
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          // MiniCssExtractPlugin.loader, // Load, implement plugin MiniCssExtractPlugin, it's not compatible with webpack@5
+          'css-loader'
+        ]
+      }
+    ]
+  }
 };
